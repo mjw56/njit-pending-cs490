@@ -114,7 +114,7 @@ const AppointmentsBox = ({appointmentsJSON}) => {
                    minHeight={'44px'}
                    height={`calc(44px * ${lengthInHours})`}
                    mt={`calc((44px * ${startHour}) + 8.5px)`}
-                   backgroundColor={isLightTheme?'white':"#252628"}
+                   backgroundColor={isLightTheme?'#f3f5f7':"#252628"}
                    color={isLightTheme?"#1F1F1F":"white"}
                    fontSize={'14px'}
                    fontWeight={'500'}
