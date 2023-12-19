@@ -2,6 +2,7 @@ import {Box, Flex, ListItem, Text, UnorderedList} from "@chakra-ui/react"
 import moment from "moment"
 import {useEffect, useState} from "react"
 import {setTimeout} from 'worker-timers'
+import {useAuth} from 'src/auth';
 
 /** A loop for generating random fake appointments */
 // for (let i = 0; i < 15; i++) {
@@ -17,6 +18,8 @@ import {setTimeout} from 'worker-timers'
 // }
 
 const AppointmentsBox = ({appointmentsJSON}) => {
+  const { currentUser } = useAuth();
+  const isLightTheme = currentUser.theme.toString() === 'Light Theme';
   // Sort appointments by startTime
   appointmentsJSON.sort((a, b) => {return a.startTime.localeCompare(b.startTime)})
 
@@ -78,14 +81,14 @@ const AppointmentsBox = ({appointmentsJSON}) => {
         <UnorderedList>
         {appointmentsJSON.filter(({allDay}) => {return allDay}).map(({id, summary}) => {
           return (
-            <ListItem key={id} color={'#1F1F1F'}>
+            <ListItem key={id} color={isLightTheme?"1F1F1F":"white"}>
               {summary}
             </ListItem>
           )
         })}
         </UnorderedList>
       </Box>
-      <Box position={'relative'}>
+      <Box position={'relative'} bg={isLightTheme?"transparent":"#4E5155"} borderRadius={'10px'} p="20px">
         <Box position={'absolute'} zIndex={'1'} width={'90%'} right={'0'}>
           {appointmentsJSON.filter(({allDay}) => {return !allDay}).map(({id, summary, startTime, endTime, allDay}, idx) => {
             let today = moment().format('YYYY-MM-DD')
@@ -111,14 +114,14 @@ const AppointmentsBox = ({appointmentsJSON}) => {
                    minHeight={'44px'}
                    height={`calc(44px * ${lengthInHours})`}
                    mt={`calc((44px * ${startHour}) + 8.5px)`}
-                   backgroundColor={'#FFF'}
-                   color={'#1F1F1F'}
+                   backgroundColor={isLightTheme?'white':"#252628"}
+                   color={isLightTheme?"#1F1F1F":"white"}
                    fontSize={'14px'}
                    fontWeight={'500'}
                    lineHeight={'17px'}
                    width={`calc(100% - (100% * ${staggerLeft}))`}
                    ml={`calc(100% * ${staggerLeft})`}
-                   _hover={{backgroundColor: '#FAFAFA'}}
+                   _hover={{ backgroundColor: isLightTheme ? '#FAFAFA' : '#3b3c40' }}
               >
                 {summary}
               </Box>
@@ -126,7 +129,7 @@ const AppointmentsBox = ({appointmentsJSON}) => {
           })}
         </Box>
         <Flex flexDirection={'column'} gap={'27px'} fontSize={'14px'} fontWeight={'400'}
-              lineHeight={'17px'} color={'#1F1F1F'} alignItems={'flex-start'}>
+          lineHeight={'17px'} color={isLightTheme?"1F1F1F":"white"} alignItems={'flex-start'}>
           {timeMap.map((time, idx) => {
             return (
               <Text key={idx} color={time === currentHour ? '#6284FF' : ''}

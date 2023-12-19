@@ -1,6 +1,7 @@
 import {Box, Flex, Text} from "@chakra-ui/react";
 import TaskCard from "src/components/TaskCard/TaskCard";
 import {Droppable, Draggable} from "react-beautiful-dnd"
+import {useAuth} from 'src/auth'
 
 const TaskType = ({type, data, callback}) => {
     /**
@@ -14,14 +15,17 @@ const TaskType = ({type, data, callback}) => {
         callback(type, data)
     }
 
+    const {currentUser} = useAuth()
+    const isLightTheme = currentUser.theme.toString() === 'Light Theme';
+
     if (!type) throw new Error('type is required')
     if (!data) throw new Error('data is required')
     if (!callback) throw new Error('callback is required')
 
     return (
         <>
-            <Box backgroundColor={'#F5F7F9'} w={'100%'} mb={'10px'} p={'16px'} borderRadius={'8px'}>
-                <Text fontSize={'20px'}>{type}</Text>
+            <Box backgroundColor={isLightTheme?'#F5F7F9':"#4E5155"} w={'100%'} mb={'10px'} p={'16px'} borderRadius={'8px'}>
+              <Text fontSize={'20px'}>{type}</Text>
                 <Droppable droppableId={type}>
                     {(provided) => (
                         <Flex flexDirection={'column'} {...provided.droppableProps} ref={provided.innerRef}>

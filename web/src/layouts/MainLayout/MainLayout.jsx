@@ -7,6 +7,7 @@ import '@fontsource/dm-sans/700.css'
 
 const MainLayout = ({ children }) => {
   const { currentUser, logOut } = useAuth();
+  const isLightTheme = currentUser.theme.toString() === 'Light Theme'
 
   // Get the route name from the location object
   const routeName = location.pathname.substring(1); // Remove the leading '/'
@@ -20,7 +21,7 @@ const MainLayout = ({ children }) => {
   return (
 
     <ChakraProvider theme={theme}>
-      <Flex spacing={0}>
+      <Flex spacing={0} backgroundColor={isLightTheme?"white":"#252628"} textColor={isLightTheme?"black":"white"}>
         <VStack w={"15vw"} h={"100vh"} backgroundColor={"#252628"} color={"white"}>
           <Flex flexDirection={'column'} alignItems={'center'} w={"80%"} gap={"2vh"} flexGrow={'1'}>
             <Text mt={"5vh"} fontSize={36} fontFamily={"Fredoka One"}>Crush It</Text>

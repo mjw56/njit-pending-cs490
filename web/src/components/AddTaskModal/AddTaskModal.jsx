@@ -22,6 +22,12 @@ import {
 import {useState} from "react";
 import {AddIcon} from "@chakra-ui/icons";
 import {toast} from "@redwoodjs/web/toast";
+import {useAuth} from 'src/auth';
+
+const isLightTheme = () => {
+  const { currentUser } = useAuth();
+  return currentUser.theme.toString() === 'Light Theme';
+};
 
 const AddTaskModal = ({tasks, setTasks}) => {
 function FindID() {
@@ -95,7 +101,7 @@ return (
     />
     <Modal isOpen={isOpen} onClose={onClose}>
       <ModalOverlay/>
-      <ModalContent>
+      <ModalContent backgroundColor={isLightTheme()?"white":"#252628"} textColor={isLightTheme()?"black":"white"}>
         <ModalHeader>Create New task</ModalHeader>
         <ModalCloseButton/>
         <ModalBody>
@@ -117,8 +123,8 @@ return (
             >
               <NumberInputField/>
               <NumberInputStepper>
-                <NumberIncrementStepper/>
-                <NumberDecrementStepper/>
+                <NumberIncrementStepper color={isLightTheme()?"black":"white"}/>
+                <NumberDecrementStepper color={isLightTheme()?"black":"white"}/>
               </NumberInputStepper>
             </NumberInput>
           </FormControl>
@@ -134,7 +140,7 @@ return (
           <Button mt={5} mr={3} colorScheme="blue" onClick={handleSubmit}>
             Submit
           </Button>
-          <Button mt={5} variant="ghost" onClick={onClose}>
+          <Button mt={5} variant={isLightTheme()?"ghost":"solid"} onClick={onClose} color={isLightTheme()?"black":"white"} textColor="black">
             Cancel
           </Button>
         </ModalFooter>

@@ -26,6 +26,7 @@ import { setInterval, clearInterval } from 'worker-timers'
 import { useAuth } from 'src/auth'
 import Timer from 'src/components/Timer/Timer'
 
+
 const FocusTimeModal = ({
   setNotes,
   isOpen,
@@ -102,6 +103,7 @@ useEffect(() => {
     }
   }, [isOpen, taskNotes])
   const { currentUser, reauthenticate } = useAuth()
+  const isLightTheme = currentUser.theme.toString() === 'Light Theme';
   const onTimerFinish = () => {
     if (currentTab === 'pomodoro') {
       if ((numPomosComplete + 1) % 4 === 0) {
@@ -136,7 +138,7 @@ useEffect(() => {
         height="60%"
         borderRadius="10px"
         boxShadow="2px 5px 50px 0px #2425281A"
-        bg="#FFFFFF"
+        bg={isLightTheme?"white":"#4E5155"}
       >
         <Flex
           justifyContent="space-between"
@@ -164,7 +166,7 @@ useEffect(() => {
             />
 
             <Text
-              color="#000000"
+              color={isLightTheme?"Black":"White"}
               fontFamily="DM Sans"
               fontSize="16px"
               fontWeight="700"
@@ -178,7 +180,7 @@ useEffect(() => {
 
             <Flex direction="column" alignItems="center" mt="4%" h="100%">
               <Box
-                bg="#F5F7F9"
+                bg={isLightTheme?"#F5F7F9":"#252628"}
                 width="90%"
                 height="45.6%"
                 borderRadius="8px 8px 8px 8px"
@@ -220,7 +222,7 @@ useEffect(() => {
                         width="100%"
                         height="6.2vh"
                         style={{
-                          outlineColor: '#F5F7F9',
+                          outlineColor: 'transparent',
                           boxShadow: 'none',
                           width: '100%',
                           marginLeft: '3%',
@@ -310,7 +312,7 @@ useEffect(() => {
               setIsTimerRunning={setIsTimerRunning}
             />
             <Text
-              color="#000000"
+              color={isLightTheme?"Black":"White"}
               fontFamily="DM Sans"
               fontSize="16px"
               fontWeight="700"
@@ -324,7 +326,7 @@ useEffect(() => {
 
             <Flex direction="column" alignItems="center" mt="4%" h="100%">
               <Box
-                bg="#F5F7F9"
+                bg={isLightTheme?"#F5F7F9":"#252628"}
                 width="90%"
                 height="45.6%"
                 borderRadius="8px 8px 8px 8px"
@@ -366,7 +368,7 @@ useEffect(() => {
                         width="100%"
                         height="6.2vh"
                         style={{
-                          outlineColor: '#F5F7F9',
+                          outlineColor: 'transparent',
                           boxShadow: 'none',
                           width: '100%',
                           marginLeft: '3%',
@@ -451,7 +453,7 @@ useEffect(() => {
               setIsTimerRunning={setIsTimerRunning}
             />
             <Text
-              color="#000000"
+              color={isLightTheme?"Black":"White"}
               fontFamily="DM Sans"
               fontSize="16px"
               fontWeight="700"
@@ -465,7 +467,7 @@ useEffect(() => {
 
             <Flex direction="column" alignItems="center" mt="4%" h="100%">
               <Box
-                bg="#F5F7F9"
+                bg={isLightTheme?"#F5F7F9":"#252628"}
                 width="90%"
                 height="45.6%"
                 borderRadius="8px 8px 8px 8px"
@@ -507,7 +509,7 @@ useEffect(() => {
                         width="100%"
                         height="6.2vh"
                         style={{
-                          outlineColor: '#F5F7F9',
+                          outlineColor: 'transparent',
                           boxShadow: 'none',
                           width: '100%',
                           marginLeft: '3%',
@@ -598,7 +600,7 @@ useEffect(() => {
       <Box position="relative">
         <Text
           key={title}
-          color={isActive ? '#6284FF' : '#1F1F1F'}
+          color={isActive ? '#6284FF' : (isLightTheme ? '#1F1F1F' : 'white')}
           fontFamily="DM Sans"
           fontSize="13px"
           fontWeight="700"

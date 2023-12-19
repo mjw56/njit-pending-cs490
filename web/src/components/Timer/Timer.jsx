@@ -20,6 +20,8 @@ import {
   useEditableControls,
 } from '@chakra-ui/react'
 import { setInterval, clearInterval } from 'worker-timers'
+import { useAuth } from 'src/auth'
+
 
 const Timer = ({
   isPomo,
@@ -35,6 +37,8 @@ const Timer = ({
   const [seconds, setSeconds] = useState(0)
   const [isRunning, setIsRunning] = useState(false)
   const [isPomodoro, setIsPomodoro] = useState(isPomo)
+  const { currentUser } = useAuth()
+  const isLightTheme = currentUser.theme.toString() === 'Light Theme';
 
   useEffect(() => {
     setIsTimerRunning(isRunning)
@@ -101,7 +105,7 @@ const Timer = ({
       h="100%"
     >
       <Box
-        bg="#F5F7F9"
+        bg={isLightTheme?"#F5F7F9":"#252628"}
         display="flex"
         flexDirection="column"
         alignItems="center"
@@ -110,7 +114,7 @@ const Timer = ({
         borderRadius="8px 8px 8px 8px"
       >
         <Text
-          color="#1F1F1F"
+          color={isLightTheme?"#1F1F1F":"white"}
           fontFamily="DM Sans"
           fontSize="73"
           fontWeight="700"

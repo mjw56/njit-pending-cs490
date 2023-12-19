@@ -34,13 +34,25 @@ const getStatusFromIndex = (n) => {
 }
 
 const StatusIcons = ({ status, callback, task, idx, setTaskStatus }) => {
-  const images = [
-    'img/not_started.svg',
-    'img/in_progress.svg',
-    'img/completed.svg',
-    'img/rollover.svg',
-    'img/cancelled.svg',
-  ]
+  const {currentUser} = useAuth()
+  const isLightTheme = currentUser.theme.toString() === 'Light Theme';
+
+  const images =
+    isLightTheme?
+    [
+      'img/not_started.svg',
+      'img/in_progress.svg',
+      'img/completed.svg',
+      'img/rollover.svg',
+      'img/cancelled.svg',
+    ]:
+    [
+      'img/not_started_white.svg',
+      'img/in_progress_white.svg',
+      'img/completed_white.svg',
+      'img/rollover_white.svg',
+      'img/cancelled_white.svg',
+    ]
 
   const getIndexFromStatus = (status) => {
     switch (status) {
@@ -99,6 +111,7 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
   const [taskStatus, setTaskStatus] = useState(task.status)
 
   const notesBox = useRef()
+  const isLightTheme = currentUser.theme.toString() === 'Light Theme';
 
   /**
    * Update states that depend on task
@@ -207,7 +220,7 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
   return (
     <>
       <Box
-        backgroundColor={'white'}
+        backgroundColor={isLightTheme?"white":"#252628"}
         borderRadius={'8px'}
         p={'14px'}
         outline={isDragging ? '1px solid lightgray' : 'none'}
@@ -237,16 +250,16 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
           </Text>
           <Spacer />
           <Box {...dragHandle}>
-            <DragIcon />
+            <DragIcon isLightTheme={isLightTheme}/>
           </Box>
           <button onClick={handleToggle} aria-label={'expand'}>
-            <ChevronIcon active={show} />
+            <ChevronIcon active={show} isLightTheme={isLightTheme}/>
           </button>
         </HStack>
         <Collapse mt={4} in={show}>
           <hr style={{ backgroundColor: '#E2EAF1', margin: '5px' }}></hr>
           <HStack>
-            <Text fontSize={'12px'} color={'#1F1F1F'}>
+            <Text fontSize={'12px'} color={isLightTheme?'#1F1F1F':"white"}>
               Number of Pomodoro Timers ({currentUser?.pomodoro} mins each)
             </Text>
             <Spacer />
@@ -298,7 +311,7 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
                   as={TextareaAutosize}
                   resize={'none'}
                   border={'none'}
-                  style={{ outlineColor: 'white', boxShadow: 'none' }}
+                  style={{ outlineColor: 'transparent', boxShadow: 'none' }}
                 />
               </Box>
               <Spacer />
@@ -323,76 +336,41 @@ const TaskCard = ({ dragHandle, task, idx, callback, isDragging = false }) => {
   )
 }
 
-const DragIcon = () => {
+const DragIcon = ({isLightTheme}) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="16"
-      height="16"
-      viewBox="0 0 16 16"
-      fill="none"
-    >
-      <path
-        d="M15.7129 8.89949L14.0654 10.7189C13.3129 11.5509 12.0226 10.4204 12.7945 9.56791L13.3084 9.00025H8.85736V13.3084L9.42502 12.7944C10.264 12.0334 11.4172 13.3037 10.576 14.0654L8.75744 15.712C8.54889 15.8974 8.2796 15.9998 8.00057 16C7.72154 16.0002 7.45213 15.898 7.24338 15.7128L5.424 14.0654C4.58165 13.3027 5.7366 12.034 6.57496 12.7944L7.14262 13.3084V9.00025H2.69154L3.20551 9.56791C3.98024 10.4236 2.67942 11.5424 1.93455 10.7189L0.287906 8.90032C0.102585 8.69175 0.000154445 8.42248 1.74514e-07 8.14347C-0.000154096 7.86446 0.101979 7.59507 0.287069 7.38629L1.93455 5.56694C2.6946 4.72671 3.96689 5.87698 3.20551 6.71789L2.69154 7.28555H7.14262V2.69164L6.57496 3.20559C5.73614 3.96637 4.58258 2.69643 5.424 1.93463L7.24255 0.288026C7.45109 0.102633 7.72038 0.000154457 7.99941 1.74459e-07C8.27845 -0.000154108 8.54785 0.102026 8.7566 0.287188L10.576 1.93462C11.4324 2.70997 10.2465 3.95019 9.42502 3.20558L8.85736 2.69163V7.28554H13.3084L12.7945 6.71788C12.0341 5.87804 13.3046 4.72513 14.0654 5.56693L15.7121 7.38545C15.8974 7.59402 15.9998 7.8633 16 8.14231C16.0001 8.42132 15.898 8.69071 15.7129 8.89949Z"
-        fill="#292D32"
-      />
-    </svg>
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16" fill="none">
+          <path
+              d="M15.7129 8.89949L14.0654 10.7189C13.3129 11.5509 12.0226 10.4204 12.7945 9.56791L13.3084 9.00025H8.85736V13.3084L9.42502 12.7944C10.264 12.0334 11.4172 13.3037 10.576 14.0654L8.75744 15.712C8.54889 15.8974 8.2796 15.9998 8.00057 16C7.72154 16.0002 7.45213 15.898 7.24338 15.7128L5.424 14.0654C4.58165 13.3027 5.7366 12.034 6.57496 12.7944L7.14262 13.3084V9.00025H2.69154L3.20551 9.56791C3.98024 10.4236 2.67942 11.5424 1.93455 10.7189L0.287906 8.90032C0.102585 8.69175 0.000154445 8.42248 1.74514e-07 8.14347C-0.000154096 7.86446 0.101979 7.59507 0.287069 7.38629L1.93455 5.56694C2.6946 4.72671 3.96689 5.87698 3.20551 6.71789L2.69154 7.28555H7.14262V2.69164L6.57496 3.20559C5.73614 3.96637 4.58258 2.69643 5.424 1.93463L7.24255 0.288026C7.45109 0.102633 7.72038 0.000154457 7.99941 1.74459e-07C8.27845 -0.000154108 8.54785 0.102026 8.7566 0.287188L10.576 1.93462C11.4324 2.70997 10.2465 3.95019 9.42502 3.20558L8.85736 2.69163V7.28554H13.3084L12.7945 6.71788C12.0341 5.87804 13.3046 4.72513 14.0654 5.56693L15.7121 7.38545C15.8974 7.59402 15.9998 7.8633 16 8.14231C16.0001 8.42132 15.898 8.69071 15.7129 8.89949Z"
+              fill={isLightTheme?"#292D32":"white"}/>
+      </svg>
   )
 }
 
-const ChevronIcon = ({ active }) => {
+const ChevronIcon = ({
+                       active, isLightTheme
+                   }) => {
   if (active) {
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 20 20"
-        fill="none"
-      >
-        <path
-          d="M9.99984 18.3333C14.6022 18.3333 18.3332 14.6024 18.3332 9.99999C18.3332 5.39762 14.6022 1.66666 9.99984 1.66666C5.39746 1.66666 1.6665 5.39762 1.6665 9.99999C1.6665 14.6024 5.39746 18.3333 9.99984 18.3333Z"
-          stroke="#292D32"
-          strokeWidth="1.2"
-          strokeMiterlimit="10"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M7.05835 8.94998L10 11.8833L12.9417 8.94998"
-          stroke="#292D32"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    )
+      return (
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 20 20" fill="none">
+              <path
+                  d="M9.99984 18.3333C14.6022 18.3333 18.3332 14.6024 18.3332 9.99999C18.3332 5.39762 14.6022 1.66666 9.99984 1.66666C5.39746 1.66666 1.6665 5.39762 1.6665 9.99999C1.6665 14.6024 5.39746 18.3333 9.99984 18.3333Z"
+                  stroke={isLightTheme?"#292D32":"white"} strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round"
+                  strokeLinejoin="round"/>
+              <path d="M7.05835 8.94998L10 11.8833L12.9417 8.94998" stroke={isLightTheme?"#292D32":"white"} strokeWidth="1.2"
+                    strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+      )
   } else {
-    return (
-      <svg
-        xmlns="http://www.w3.org/2000/svg"
-        width="20"
-        height="20"
-        viewBox="0 0 18 18"
-        fill="none"
-      >
-        <path
-          d="M8.99988 16.5C13.142 16.5 16.4999 13.1422 16.4999 9.00003C16.4999 4.85789 13.142 1.50003 8.99988 1.50003C4.85774 1.50003 1.49988 4.85789 1.49988 9.00003C1.49988 13.1422 4.85774 16.5 8.99988 16.5Z"
-          stroke="#292D32"
-          strokeWidth="1.2"
-          strokeMiterlimit="10"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-        <path
-          d="M8.05493 11.6475L10.6949 8.99998L8.05493 6.35248"
-          stroke="#292D32"
-          strokeWidth="1.2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
-        />
-      </svg>
-    )
+      return (
+          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 18 18" fill="none">
+              <path
+                  d="M8.99988 16.5C13.142 16.5 16.4999 13.1422 16.4999 9.00003C16.4999 4.85789 13.142 1.50003 8.99988 1.50003C4.85774 1.50003 1.49988 4.85789 1.49988 9.00003C1.49988 13.1422 4.85774 16.5 8.99988 16.5Z"
+                  stroke={isLightTheme?"#292D32":"white"} strokeWidth="1.2" strokeMiterlimit="10" strokeLinecap="round"
+                  strokeLinejoin="round"/>
+              <path d="M8.05493 11.6475L10.6949 8.99998L8.05493 6.35248" stroke={isLightTheme?"#292D32":"white"} strokeWidth="1.2"
+                    strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+      )
   }
 }
 

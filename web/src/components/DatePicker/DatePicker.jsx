@@ -12,6 +12,12 @@ import {
   IconButton,
 } from '@chakra-ui/react'
 import moment from 'moment'
+import {useAuth} from 'src/auth';
+
+const isLightTheme = () => {
+  const { currentUser } = useAuth();
+  return currentUser.theme.toString() === 'Light Theme';
+};
 
 const DatePicker = ({ setDateProp }) => {
   const [date, setDate] = useState(moment())
@@ -36,6 +42,7 @@ const DatePicker = ({ setDateProp }) => {
     >
       <HStack spacing={'3'}>
         <IconButton
+          bg="transparent"
           icon={<ArrowCircleLeftIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
@@ -45,10 +52,12 @@ const DatePicker = ({ setDateProp }) => {
           {({ isOpen }) => (
             <>
               <MenuButton
+                bg="transparent"
                 isActive={isOpen}
                 as={Button}
                 outlineColor={'#6284FF'}
                 fill={'none'}
+                color={isLightTheme()?"1F1F1F":"white"}
                 rightIcon={
                   isOpen ? (
                     <CircleChevronDownIcon
@@ -62,15 +71,18 @@ const DatePicker = ({ setDateProp }) => {
                 {date.format('MMMM')}
               </MenuButton>
               <MenuList
+                bg="transparent"
                 maxHeight={'239px'}
                 overflowY={'auto'}
                 scrollbar-color={'#6284FF'}
                 outlineColor={'#6284FF'}
+                color={isLightTheme()?"1F1F1F":"white"}
               >
                 {moment.months().map((month) => (
                   <MenuItem
                     key={month}
-                    color={'black'}
+                    bg={isLightTheme()?"white":"#252628"}
+                    color={isLightTheme()?"black":"white"}
                     onClick={() => setDate(moment(date).month(month))}
                   >
                     {month}
@@ -82,6 +94,7 @@ const DatePicker = ({ setDateProp }) => {
         </Menu>
 
         <IconButton
+          bg="transparent"
           icon={<ArrowCircleRightIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
@@ -91,6 +104,7 @@ const DatePicker = ({ setDateProp }) => {
 
       <HStack spacing={'3'}>
         <IconButton
+          bg="transparent"
           icon={<ArrowCircleLeftIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
@@ -100,10 +114,12 @@ const DatePicker = ({ setDateProp }) => {
           {({ isOpen }) => (
             <>
               <MenuButton
+                bg="transparent"
                 isActive={isOpen}
                 as={Button}
                 outlineColor={'#6284FF'}
                 fill={'none'}
+                color={isLightTheme()?"1F1F1F":"white"}
                 rightIcon={
                   isOpen ? (
                     <CircleChevronDownIcon
@@ -122,11 +138,13 @@ const DatePicker = ({ setDateProp }) => {
                 overflowY={'auto'}
                 scrollbar-color={'#6284FF'}
                 outlineColor={'#6284FF'}
+                color={isLightTheme()?"1F1F1F":"white"}
               >
                 {days.map((day) => (
                   <MenuItem
                     key={day}
-                    color={'black'}
+                    color={isLightTheme()?"black":"white"}
+                    bg={isLightTheme()?"white":"#252628"}
                     onClick={() => setDate(moment(date).date(day))}
                   >
                     {day}
@@ -138,6 +156,7 @@ const DatePicker = ({ setDateProp }) => {
         </Menu>
 
         <IconButton
+          bg="transparent"
           icon={<ArrowCircleRightIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
@@ -147,6 +166,7 @@ const DatePicker = ({ setDateProp }) => {
 
       <HStack spacing={'3'}>
         <IconButton
+          bg="transparent"
           icon={<ArrowCircleLeftIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}
@@ -156,10 +176,12 @@ const DatePicker = ({ setDateProp }) => {
           {({ isOpen }) => (
             <>
               <MenuButton
+                bg="transparent"
                 isActive={isOpen}
                 as={Button}
                 outlineColor={'#6284FF'}
                 fill={'none'}
+                color={isLightTheme()?"1F1F1F":"white"}
                 rightIcon={
                   isOpen ? (
                     <CircleChevronDownIcon
@@ -178,11 +200,13 @@ const DatePicker = ({ setDateProp }) => {
                 overflowY={'auto'}
                 scrollbar-color={'#6284FF'}
                 outlineColor={'#6284FF'}
+                color={isLightTheme()?"1F1F1F":"white"}
               >
                 {years.map((year) => (
                   <MenuItem
+                    bg={isLightTheme()?"white":"#252628"}
                     key={year}
-                    color={'black'}
+                    color={isLightTheme()?"black":"white"}
                     onClick={() => setDate(moment(date).year(year))}
                   >
                     {year}
@@ -194,6 +218,7 @@ const DatePicker = ({ setDateProp }) => {
         </Menu>
 
         <IconButton
+          bg="transparent"
           icon={<ArrowCircleRightIcon />}
           fill={'none'}
           outlineColor={'#6284FF'}

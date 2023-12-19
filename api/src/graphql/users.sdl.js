@@ -7,6 +7,7 @@ export const schema = gql`
     pomodoro: Int!
     shortBreak: Int!
     longBreak: Int!
+    theme: String!
     picture: String!
     identities: [Identity]!
   }
@@ -28,6 +29,7 @@ export const schema = gql`
     pomodoro: Int
     shortBreak: Int
     longBreak: Int
+    theme: String
   }
 
   type Mutation {
